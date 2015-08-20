@@ -1,10 +1,12 @@
 # Emacs Paper Online Search
 
-Emacs wrapper for pyopl (python online paper locator) to search and fetch scientific citations online and add them to a bib file.
+Emacs wrapper for [`pyopl`](http://github.com/dimalik/pyopl/) (python online paper locator) to search and fetch scientific citations online and add them to a bib file.
 
 ## Installation
 
-To try it out, download the latest version of `empos.el` from github and add to your `.emacs`
+Firstly, you need to have installed [`pyopl`](http://github.com/dimalik/pyopl/), preferably somewhere in your `PATH` (default - see below for manually specifying the path).
+
+To try out the emacs wrapper, download the latest version of `empos.el` from github and add the following to your `.emacs`:
 
 ```elisp
 (add-to-list 'load-path "/path/to/empos")           ; comment if empos.el is in standard load path
