@@ -23,6 +23,12 @@ To try it out, download the latest version of `empos.el` from github and add to 
 
 ## Usage
 
+### Short story
+
+`M-x empos-search RET your-query RET`
+
+### Longer version
+
 The extension is essentially a wrapper for pyopl written for emacs. It works by calling pyopl with arguments specified in emacs, displaying the results in a separate buffer and saving the references in a specified location.
 
 The location of the `pyopl` executable is considered to be global (i.e, it can be invoked like this:
