@@ -13,7 +13,7 @@ To try it out, download the latest version of `empos.el` from github and add to 
 (setq empos-available-engines '("arxiv" "crossref"))
 (setq empos-favorite-engines '("crossref"))         ; comment for all available
 (setq empos-bib-file "path/to/bibliography.bib")
-(setq empos-secondary-bib "path/to/a/folder")
+(setq empos-secondary-bib "path/to/a/folder")       ; comment if not needed
 ```
 
 - `empos-available-engines` should contain engines that have been installed in pyopl.
