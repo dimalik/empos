@@ -166,8 +166,10 @@ wrong, you can specify the full path in this variable.")
     (if (string-match "\\[\\(.*\\)\\][[:blank:]]*\(\\(.*\\)\)" line)
 	(let* ((identifier (match-string 1 line))
 	       (engine (match-string 2 line))
-	       (script (format "%s --fetch --engines=\"%s\" --bib=\"%s\""
-			       pyopl-path engine empos-bib-file)))
+	       (script (format "%s --fetch --engines=\"%s\""
+			       pyopl-path engine)))
+	  (if (boundp 'empos-bib-file)
+	      (setq script (concat script (format " --bib=\"%s\"" empos-bib-file))))
 	  (if (boundp 'empos-secondary-bib)
 	      (setq script (concat script (format " --secondary-bib=\"%s\"" empos-secondary-bib))))
 	  (setq script (concat script (format " \"%s\"" identifier)))
