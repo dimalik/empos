@@ -82,15 +82,6 @@
 ;; fetch the relevant id and engine and calling pyopl executable again, this time in
 ;; fetch mode.
 ;;
-;;; Bugs:
-;;
-;; * Quote pairing/skipping inside comments is not perfect...
-;;
-;; * See the last section on monkey-patching for the `defadvice'
-;;   tricks used to make `autopair-autowrap' work with `cua-mode' and
-;;   `delete-selection-mode'.
-;;
-;;
 ;;; Code:
 
 (defcustom empos-favorite-engines empos-available-engines
