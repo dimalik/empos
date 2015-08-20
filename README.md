@@ -14,7 +14,8 @@ To try out the emacs wrapper, download the latest version of `empos.el` from git
 
 (setq empos-available-engines '("arxiv" "crossref"))
 (setq empos-favorite-engines '("crossref"))         ; comment for all available
-(setq empos-bib-file "path/to/bibliography.bib")
+(setq empos-bib-file "path/to/bibliography.bib")    ; can be optional, but then it woud make sense
+                                                    ; to define the empos-secondary-bib
 (setq empos-secondary-bib "path/to/a/folder")       ; comment if not needed
 ```
 
