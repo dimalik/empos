@@ -141,6 +141,7 @@ wrong, you can specify the full path in this variable.")
   nil
   :lighter " Empos"
   :keymap empos-mode-map
+  (toggle-truncate-lines)
   (setq hl-line-range-function 'visual-line-line-range)
   (hl-line-mode 1))
 
@@ -184,7 +185,7 @@ wrong, you can specify the full path in this variable.")
   (interactive "sEnter query: ")
   (unless engines (setq engines empos-favorite-engines))
   (setq engines (mapconcat 'identity engines ","))
-  (let ((scriptName (format "%s --search --engines=%s \"%s\""
+  (let* ((scriptName (format "%s --search --engines=%s \"%s\""
 			    pyopl-path engines q)))
     (save-excursion
       (switch-to-buffer-other-window "*Empos*")
