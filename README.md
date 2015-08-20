@@ -16,10 +16,10 @@ To try it out, download the latest version of `empos.el` from github and add to 
 (setq empos-secondary-bib "path/to/a/folder")
 ```
 
-1. `empos-available-engines` should contain engines that have been installed in pyopl.
-1. `empos-favorite-engines` contains the engines to be used. Note this is a custom variable and can be set through customization.
-1. `empos-bib-file` is the (absolute) path to the master bibliography file in which the references are appended.
-1. `empos-secondary-bib` is the (absolute) path to a folder in which the citations are going to be added.
+- `empos-available-engines` should contain engines that have been installed in pyopl.
+- `empos-favorite-engines` contains the engines to be used. Note this is a custom variable and can be set through customization.
+- `empos-bib-file` is the (absolute) path to the master bibliography file in which the references are appended.
+- `empos-secondary-bib` is the (absolute) path to a folder in which the citations are going to be added.
 
 ## Usage
 
