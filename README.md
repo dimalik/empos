@@ -4,7 +4,7 @@ Emacs wrapper for pyopl (python online paper locator) to search and fetch scient
 
 ## Installation
 
-To try it out, download the latest version from github and add to your `.emacs`
+To try it out, download the latest version of `empos.el` from github and add to your `.emacs`
 
 ```elisp
 (add-to-list 'load-path "/path/to/empos")           ; comment if empos.el is in standard load path
