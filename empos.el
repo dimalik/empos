@@ -84,6 +84,10 @@
 ;;
 ;;; Code:
 
+(defcustom empos-available-engines nil
+  "List of the available engines for pyopl. This should be specified
+in the .emacs file.")
+
 (defcustom empos-favorite-engines empos-available-engines
   "List of your favourite engines. When specified then empos-search
 uses only these to find your query. If not specified empos-search
@@ -96,7 +100,7 @@ in .emacs."
 (defconst empos-citation-height 4
   "The number of lines each citation has when searched from empos.py.")
 
-(defcustom pyopl-path "pypol"
+(defcustom pyopl-path "pyopl"
   "Path to the pyopl executable. Normally, this would be available globally
 (i.e. invakable as a terminal command), however, in the case something goes
 wrong, you can specify the full path in this variable.")
