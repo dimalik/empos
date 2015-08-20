@@ -171,7 +171,7 @@ wrong, you can specify the full path in this variable.")
 	      (setq script (concat script (format " --secondary-bib=\"%s\"" empos-secondary-bib))))
 	  (setq script (concat script (format " \"%s\"" identifier)))
 	  (shell-command script nil)
-	  (message "%s" script)
+	  (message "Article with id %s was successfully copied to your library." identifier)
 	  (empos-mode nil)
 	  (kill-buffer-and-window)))))
 
