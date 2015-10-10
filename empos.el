@@ -85,14 +85,17 @@
 ;;; Code:
 
 (defcustom empos-available-engines nil
-  "List of the available engines for pyopl. This should be specified
-in the .emacs file.")
+  "List of the available engines for pyopl.
+This should be specified in the .emacs file."
+  :type 'list
+  :require 'empos-base
+  :group 'empos-engines)
 
 (defcustom empos-favorite-engines empos-available-engines
-  "List of your favourite engines. When specified then empos-search
-uses only these to find your query. If not specified empos-search
-uses all available engines found in the empos-available-engines variable
-in .emacs."
+  "List of your favourite engines.
+When specified then empos-search uses only these to find your query.  If not
+specified empos-search uses all available engines found in the 
+empos-available-engines variable in .emacs."
   :type 'list
   :require 'empos-base
   :group 'empos-engines)
@@ -101,23 +104,27 @@ in .emacs."
   "The number of lines each citation has when searched from empos.py.")
 
 (defcustom pyopl-path "pyopl"
-  "Path to the pyopl executable. Normally, this would be available globally
-(i.e. invakable as a terminal command), however, in the case something goes
-wrong, you can specify the full path in this variable.")
+  "Path to the pyopl executable.
+Normally, this would be available globally (i.e. invakable as a terminal
+command), however, in the case something goes wrong, you can specify the
+full path in this variable."
+  :group 'empos-paths)
 
-;; quick helper functions for empos-mode
 (defun empos-quit-window ()
+  "Close the empos window."
   (interactive)
   (empos-mode nil)
   (quit-window))
 
 (defun empos-move-up ()
+  "Move the cursor up by the given height."
   (interactive)
-  (previous-line empos-citation-height))
+  (forward-line (- 0 empos-citation-height)))
 
 (defun empos-move-down ()
+  "Move the cursor down by the given height."
   (interactive)
-  (next-line empos-citation-height))
+  (forward-line empos-citation-height))
 
 (defun visual-line-line-range ()
   (save-excursion
@@ -146,10 +153,9 @@ wrong, you can specify the full path in this variable.")
   (hl-line-mode 1))
 
 (defun empos-take-me-to-first-line ()
-  ;; ensure we are on the first line of the reference
-  ;; which contains the identifier and the engine
-  ;; useful only in the case where empos-move-[up|down]
-  ;; do not work for some reason.
+  "Return the cursor to the first line of the citation.
+Ensures we are on the first line of the reference
+which contains the identifier and the engine."
   (interactive)
   (beginning-of-line)
   (let ((current-line-num (+ 1 (count-lines 1 (point)))))
@@ -158,8 +164,9 @@ wrong, you can specify the full path in this variable.")
       (setq current-line-num (+ 1 (count-lines 1 (point)))))))
 
 (defun empos-get-identifier ()
-  ;; regex the first line to get the identifier and the engine needed
-  ;; then feed it to empos.py to get the citation and save it.
+  "Extract the paper identifier and its associated engine.
+The identifier is assumed to be between angle brackets,
+and the engine between parentheses."
   (interactive)
   (empos-take-me-to-first-line)
   (let ((line (thing-at-point 'line t)))
@@ -179,11 +186,8 @@ wrong, you can specify the full path in this variable.")
 	  (kill-buffer-and-window)))))
 
 (defun empos-search (q &optional engines)
-  ;; for now, one time engine change is not available
-  ;; searches are performed using the favourite engines
-  ;; list. However, we do leave the engines argument here
-  ;; in case we want to implement later some within
-  ;; buffer change in the engines
+  "Send the query Q to pyopl.py.
+If ENGINES is not provided it defaults to your favourite engines."
   (interactive "sEnter query: ")
   (unless engines (setq engines empos-favorite-engines))
   (setq engines (mapconcat 'identity engines ","))
@@ -195,3 +199,4 @@ wrong, you can specify the full path in this variable.")
       (empos-mode 1))))
 
 (provide 'empos)
+;;; empos.el ends here
