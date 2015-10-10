@@ -172,7 +172,7 @@ wrong, you can specify the full path in this variable.")
 	      (setq script (concat script (format " --bib=\"%s\"" empos-bib-file))))
 	  (if (boundp 'empos-secondary-bib)
 	      (setq script (concat script (format " --secondary-bib=\"%s\"" empos-secondary-bib))))
-	  (setq script (concat script (format " \"%s\"" identifier)))
+	  (setq script (concat script (format " \"%s\"" identifier) " 2> /dev/null"))
 	  (shell-command script nil)
 	  (message "Article with id %s was successfully copied to your library." identifier)
 	  (empos-mode nil)
@@ -187,7 +187,7 @@ wrong, you can specify the full path in this variable.")
   (interactive "sEnter query: ")
   (unless engines (setq engines empos-favorite-engines))
   (setq engines (mapconcat 'identity engines ","))
-  (let* ((scriptName (format "%s --search --engines=%s \"%s\""
+  (let* ((scriptName (format "%s --search --engines=%s \"%s\" 2> /dev/null"
 			    pyopl-path engines q)))
     (save-excursion
       (switch-to-buffer-other-window "*Empos*")
