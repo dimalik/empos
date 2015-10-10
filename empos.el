@@ -149,6 +149,7 @@ full path in this variable."
   :lighter " Empos"
   :keymap empos-mode-map
   (toggle-truncate-lines)
+  (defvar hl-line-range-function)
   (setq hl-line-range-function 'visual-line-line-range)
   (hl-line-mode 1))
 
