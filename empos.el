@@ -151,16 +151,19 @@ full path in this variable."
   nil
   :lighter " Empos"
   :keymap empos-mode-map
-  (if (string= (buffer-name) "*Empos*")
+  (if (not (string= (buffer-name) "*Empos*"))
       (progn
-	(defvar hl-line-range-function)
-	(if empos-mode
-	    (progn
-	      (set (make-local-variable 'hl-line-range-function) #'empos-visual-line-range)
-	      (hl-line-mode 1))
+	(empos-mode -1)
+	(error "empos-mode should be only run on an *Empos* buffer."))
+    (progn
+      (defvar hl-line-range-function)
+      (if empos-mode
 	  (progn
-	    (makunbound 'hl-line-range-function)
-	    (hl-line-mode -1))))))
+	    (set (make-local-variable 'hl-line-range-function) #'empos-visual-line-range)
+	    (hl-line-mode 1))
+	(progn
+	  (makunbound 'hl-line-range-function)
+	  (hl-line-mode -1))))))
 
 (add-hook 'empos-mode-hook (lambda () (setq truncate-lines t)))
 
