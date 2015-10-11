@@ -84,36 +84,40 @@
 ;;
 ;;; Code:
 
+(defgroup empos nil
+  "Search citations online."
+  :group 'convenience)
+
 (defcustom empos-available-engines nil
   "List of the available engines for pyopl.
 This should be specified in the .emacs file."
   :type 'list
   :require 'empos-base
-  :group 'empos-engines)
+  :group 'empos)
 
 (defcustom empos-favorite-engines empos-available-engines
   "List of your favourite engines.
 When specified then empos-search uses only these to find your query.  If not
-specified empos-search uses all available engines found in the 
+specified empos-search uses all available engines found in the
 empos-available-engines variable in .emacs."
   :type 'list
   :require 'empos-base
-  :group 'empos-engines)
+  :group 'empos)
 
 (defconst empos-citation-height 4
   "The number of lines each citation has when searched from empos.py.")
 
-(defcustom pyopl-path "pyopl"
+(defcustom empos-pyopl-path "pyopl"
   "Path to the pyopl executable.
 Normally, this would be available globally (i.e. invakable as a terminal
 command), however, in the case something goes wrong, you can specify the
 full path in this variable."
-  :group 'empos-paths)
+  :group 'empos)
 
 (defun empos-quit-window ()
   "Close the empos window."
   (interactive)
-  (empos-mode nil)
+  (empos-mode -1)
   (quit-window))
 
 (defun empos-move-up ()
@@ -126,7 +130,8 @@ full path in this variable."
   (interactive)
   (forward-line empos-citation-height))
 
-(defun visual-line-line-range ()
+(defun empos-visual-line-range ()
+  "Change the line height to the height of the citation."
   (save-excursion
     (cons (progn (vertical-motion 0) (point))
 	  (progn (vertical-motion empos-citation-height) (point)))))
@@ -148,10 +153,18 @@ full path in this variable."
   nil
   :lighter " Empos"
   :keymap empos-mode-map
-  (toggle-truncate-lines)
-  (defvar hl-line-range-function)
-  (setq hl-line-range-function 'visual-line-line-range)
-  (hl-line-mode 1))
+  (if (string= (buffer-name) "*Empos*")
+      (progn
+	(defvar hl-line-range-function)
+	(if empos-mode
+	    (progn
+	      (set (make-local-variable 'hl-line-range-function) #'empos-visual-line-range)
+	      (hl-line-mode 1))
+	  (progn
+	    (makunbound 'hl-line-range-function)
+	    (hl-line-mode -1))))))
+
+(add-hook 'empos-mode-hook (lambda () (setq truncate-lines t)))
 
 (defun empos-take-me-to-first-line ()
   "Return the cursor to the first line of the citation.
@@ -175,7 +188,7 @@ and the engine between parentheses."
 	(let* ((identifier (match-string 1 line))
 	       (engine (match-string 2 line))
 	       (script (format "%s --fetch --engines=\"%s\""
-			       pyopl-path engine)))
+			       empos-pyopl-path engine)))
 	  (if (boundp 'empos-bib-file)
 	      (setq script (concat script (format " --bib=\"%s\"" empos-bib-file))))
 	  (if (boundp 'empos-secondary-bib)
@@ -183,7 +196,7 @@ and the engine between parentheses."
 	  (setq script (concat script (format " \"%s\"" identifier) " 2> /dev/null"))
 	  (shell-command script nil)
 	  (message "Article with id %s was successfully copied to your library." identifier)
-	  (empos-mode nil)
+	  (empos-mode -1)
 	  (kill-buffer-and-window)))))
 
 (defun empos-search (q &optional engines)
@@ -193,7 +206,7 @@ If ENGINES is not provided it defaults to your favourite engines."
   (unless engines (setq engines empos-favorite-engines))
   (setq engines (mapconcat 'identity engines ","))
   (let* ((scriptName (format "%s --search --engines=%s \"%s\" 2> /dev/null"
-			    pyopl-path engines q)))
+			    empos-pyopl-path engines q)))
     (save-excursion
       (switch-to-buffer-other-window "*Empos*")
       (shell-command scriptName "*Empos*")
