@@ -146,8 +146,6 @@ full path in this variable."
     (define-key map (kbd "RET") 'empos-get-identifier)
     map))
 
-
-;;;###autoload
 (define-minor-mode empos-mode
   "A temporary minor mode to be activated only specific to a buffer."
   nil
@@ -199,6 +197,7 @@ and the engine between parentheses."
 	  (empos-mode -1)
 	  (kill-buffer-and-window)))))
 
+;;;###autoload
 (defun empos-search (q &optional engines)
   "Send the query Q to pyopl.py.
 If ENGINES is not provided it defaults to your favourite engines."
