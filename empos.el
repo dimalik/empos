@@ -107,6 +107,14 @@ empos-available-engines variable in .emacs."
 (defconst empos-citation-height 4
   "The number of lines each citation has when searched from empos.py.")
 
+(defvar empos-null-char nil
+  "Redirect stderr to the null device.
+Checks for Windows where it sets to nul, otherwise assumes unix to /dev/null")
+
+(if (eq system-type 'windows-nt)
+    (setq empos-null-char "nul")
+  (setq empos-null-char "/dev/null"))
+
 (defcustom empos-pyopl-path "pyopl"
   "Path to the pyopl executable.
 Normally, this would be available globally (i.e. invakable as a terminal
@@ -194,7 +202,7 @@ and the engine between parentheses."
 	      (setq script (concat script (format " --bib=\"%s\"" empos-bib-file))))
 	  (if (boundp 'empos-secondary-bib)
 	      (setq script (concat script (format " --secondary-bib=\"%s\"" empos-secondary-bib))))
-	  (setq script (concat script (format " \"%s\"" identifier) " 2> /dev/null"))
+	  (setq script (concat script (format " \"%s\"" identifier) " 2> " (format "%s" empos-null-char)))
 	  (shell-command script nil)
 	  (message "Article with id %s was successfully copied to your library." identifier)
 	  (empos-mode -1)
@@ -207,8 +215,8 @@ If ENGINES is not provided it defaults to your favourite engines."
   (interactive "sEnter query: ")
   (unless engines (setq engines empos-favorite-engines))
   (setq engines (mapconcat 'identity engines ","))
-  (let* ((scriptName (format "%s --search --engines=%s \"%s\" 2> /dev/null"
-			    empos-pyopl-path engines q)))
+  (let* ((scriptName (concat (format "%s --search --engines=%s \"%s\" 2> " 
+			     empos-pyopl-path engines q) (format "%s" empos-null-char))))
     (save-excursion
       (switch-to-buffer-other-window "*Empos*")
       (shell-command scriptName "*Empos*")
